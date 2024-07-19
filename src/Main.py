@@ -1,11 +1,9 @@
 
-from PIL import Image
-
 import _
-import TileGeometry
-import TileInfo
 
-permutations = TileInfo.generatePermutations()
+from PIL import Image
+from TileGeometry import Geometry
+from TilePermutations import Permutations
 
 # This function is called once for each tile permutation to generate the base
 # image for that tile. These images will be saved into the permutations object
@@ -13,7 +11,7 @@ permutations = TileInfo.generatePermutations()
 def createTileGraphics(signature):
     print(f'Generate Tile [{signature}]')
 
-    edges = permutations[signature]['edges']
+    edges = Permutations[signature]['edges']
 
     tileImage = Image.new('RGBA',(_.TILE_SIZE,_.TILE_SIZE),(0,0,0))
 
@@ -23,7 +21,7 @@ def createTileGraphics(signature):
     drawFeatures(edges, _.CHANEL, drawChanel)
     drawFeatures(edges, _.ROOM,   drawRoom)
 
-    tileImage.show()
+    # tileImage.show()
 
 
 def drawFeatures(edges, symbol, drawFunction):
@@ -34,18 +32,19 @@ def drawFeatures(edges, symbol, drawFunction):
 
 def drawHall(direction):
     print(f'   - {direction} draw hall.')
+    print(Geometry.getDimensions(_.HALL,direction))
 
 
 def drawRoom(direction):
     print(f'   - {direction} draw room.')
+    print(Geometry.getDimensions(_.ROOM,direction))
 
 
 def drawChanel(direction):
     print(f'   - {direction} draw chanel.')
+    print(Geometry.getDimensions(_.CHANEL,direction))
 
-
-
-# for signature in permutations:
+# for signature in Permutations:
 #     createTileGraphics(signature)
 
 createTileGraphics('HRSS')
