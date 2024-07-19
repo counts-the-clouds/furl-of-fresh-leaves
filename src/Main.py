@@ -1,9 +1,14 @@
 
 import _
 
-from PIL import Image
+from collections import namedtuple
+from PIL import Image, ImageDraw
 from TileGeometry import Geometry
 from TilePermutations import Permutations
+
+
+context = { 'draw':None }
+
 
 # This function is called once for each tile permutation to generate the base
 # image for that tile. These images will be saved into the permutations object
@@ -13,7 +18,8 @@ def createTileGraphics(signature):
 
     edges = Permutations[signature]['edges']
 
-    tileImage = Image.new('RGBA',(_.TILE_SIZE,_.TILE_SIZE),(0,0,0))
+    image = Image.new('RGBA',(_.TILE_SIZE,_.TILE_SIZE),(0,0,0))
+    context['draw'] = ImageDraw.Draw(image)
 
     # Features should be drawn in the order they are layered.
     # The last feature drawn will be on top.
@@ -21,7 +27,7 @@ def createTileGraphics(signature):
     drawFeatures(edges, _.CHANEL, drawChanel)
     drawFeatures(edges, _.ROOM,   drawRoom)
 
-    # tileImage.show()
+    image.save(f'tiles/tile-{signature}-0.png')
 
 
 def drawFeatures(edges, symbol, drawFunction):
@@ -31,20 +37,19 @@ def drawFeatures(edges, symbol, drawFunction):
 
 
 def drawHall(direction):
-    print(f'   - {direction} draw hall.')
-    print(Geometry.getDimensions(_.HALL,direction))
+    dimensions = Geometry.getDimensions(_.HALL,direction)
+    context['draw'].rectangle(dimensions,(250,0,0))
 
 
 def drawRoom(direction):
-    print(f'   - {direction} draw room.')
-    print(Geometry.getDimensions(_.ROOM,direction))
+    dimensions = Geometry.getDimensions(_.ROOM,direction)
+    context['draw'].rectangle(dimensions,(0,0,250))
 
 
 def drawChanel(direction):
-    print(f'   - {direction} draw chanel.')
-    print(Geometry.getDimensions(_.CHANEL,direction))
+    dimensions = Geometry.getDimensions(_.CHANEL,direction)
+    context['draw'].rectangle(dimensions,(0,250,0))
 
-# for signature in Permutations:
-#     createTileGraphics(signature)
 
-createTileGraphics('HRSS')
+for signature in Permutations:
+    createTileGraphics(signature)

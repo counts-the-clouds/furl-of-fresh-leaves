@@ -20,14 +20,14 @@ def calculateDimensions(code):
     high = extent[1]
     top = 0
     bot = _.TILE_SIZE - 1
-    topSize = top + 5
-    botSize = bot - 5
+    topSize = top + 15
+    botSize = bot - 15
 
     return {
-        _.N: (low,top,     high,topSize),
-        _.S: (low,botSize, high,bot),
-        _.E: (botSize,low, bot,high),
-        _.W: (top,low,     topSize,high)}
+        _.N: [low,top,     high,topSize],
+        _.S: [low,botSize, high,bot],
+        _.E: [botSize,low, bot,high],
+        _.W: [top,low,     topSize,high]}
 
 
 extents = {
