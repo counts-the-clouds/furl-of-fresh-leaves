@@ -15,7 +15,7 @@ def generatePermutations():
             for e in edgeTypes.keys():
                 for w in edgeTypes.keys():
                     r = findLowestRotation(n,s,e,w)
-                    permutations[f'{r[0]}{r[1]}{r[2]}{r[3]}'] = r
+                    permutations[f'{r[0]}{r[1]}{r[2]}{r[3]}'] = { 'edges':r }
 
     permutations.pop('SSSS') # Remove all stone tile.
     return permutations
